@@ -12,6 +12,7 @@ plugins {
     id("org.octopusden.octopus-quality")
     id("io.gitlab.arturbosch.detekt")
     id("org.jlleitschuh.gradle.ktlint")
+    id("org.sonarqube")
 }
 
 description = "Octopus publishing gradle plugin (JFrog Artifactory)"

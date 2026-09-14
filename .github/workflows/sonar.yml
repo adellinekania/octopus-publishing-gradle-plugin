@@ -1,0 +1,24 @@
+name: Sonar
+
+# Every branch, not just main: a feature branch's new code is its diff against main, which the
+# reusable workflow sets per analysis. Pull requests are analysed separately — Sonar treats the
+# whole PR diff as new code there, so the two views do not overlap.
+#
+# A push to a branch with an open PR fires both events and produces two analyses of one commit.
+# Neither is wrong; it is runner time, and the trigger shape is still open (octopus-base item 2.5).
+on:
+  push:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+
+jobs:
+  sonar:
+    uses: adellinekania/octopus-base/.github/workflows/common-java-gradle-sonar.yml@add-sonar-workflows
+    with:
+      java-version: '21'
+      # Reporting only until the custom quality gate exists. The stock "Sonar way" gate still
+      # carries a coverage-on-new-code condition, and coverage is deliberately not reported yet,
+      # so blocking here would fail every pull request at 0% for a reason unrelated to the code.
+      quality-gate-wait: false
+    secrets: inherit
